@@ -16,22 +16,23 @@
     </div>
 
     <script>
-        // 1. Capture the SID passed by Link-Center
-        const urlParams = new URLSearchParams(window.location.search);
-        // Link-Center usually passes 'sid' or 'custom_id'
-        const sid = urlParams.get('sid') || urlParams.get('custom_id');
+    const urlParams = new URLSearchParams(window.location.search);
+    const sid = urlParams.get('sid') || localStorage.getItem("oblivion_sid");
 
-        // 2. Your destination (Netlify)
-        const netlifyUrl = "https://oblivionxkey.netlify.app/verify";
-
+    async function notifyAndRedirect() {
         if (sid) {
-            // Forward the SID to Netlify
-            window.location.href = `${netlifyUrl}?sid=${sid}&status=completed`;
+            // 1. Tell the API: "I am at the bridge, the ad is finished!"
+            try {
+                await fetch("https://api-kn3m.onrender.com/api/postback?sid=" + sid);
+            } catch (e) { console.log("Postback ping failed, but continuing..."); }
+
+            // 2. Go to the verify page
+            window.location.href = "https://oblivionxkey.netlify.app/verify?sid=" + sid;
         } else {
-            // Fallback: If no SID in URL, check if one was saved previously
-            // This prevents the "Expired" error if they refresh the bridge
-            window.location.href = netlifyUrl;
+            document.body.innerHTML = "No Session Found. Please restart.";
         }
-    </script>
+    }
+    notifyAndRedirect();
+</script>
 </body>
 </html>
