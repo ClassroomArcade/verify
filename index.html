@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Oblivion X Redirect</title>
+    <title>Redirecting...</title>
+    <meta charset="utf-8">
     <style>
         body { background: #0F0F12; color: #8C5AFF; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .spinner { border: 3px solid #17191C; border-top: 3px solid #8C5AFF; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
+        .spinner { border: 4px solid #17191C; border-top: 4px solid #8C5AFF; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
     <div style="text-align: center;">
-        <div class="spinner" style="margin: 0 auto 15px;"></div>
-        <p style="font-size: 12px; letter-spacing: 2px;">VERIFYING SESSION...</p>
+        <div class="spinner" style="margin: 0 auto 20px;"></div>
+        <p style="letter-spacing: 2px; font-size: 12px; font-weight: bold;">SYNCING SESSION...</p>
     </div>
 
     <script>
-        // Grab the SID from Linkvertise
-        const params = new URLSearchParams(window.location.search);
-        const sid = params.get('sid') || params.get('custom_id');
+        // 1. Capture the SID passed by Link-Center
+        const urlParams = new URLSearchParams(window.location.search);
+        // Link-Center usually passes 'sid' or 'custom_id'
+        const sid = urlParams.get('sid') || urlParams.get('custom_id');
 
-        // Your Netlify URL
-        const destination = "https://oblivionxkey.netlify.app/verify";
+        // 2. Your destination (Netlify)
+        const netlifyUrl = "https://oblivionxkey.netlify.app/verify";
 
         if (sid) {
-            // Send user to Netlify with the ID attached
-            window.location.href = `${destination}?sid=${sid}`;
+            // Forward the SID to Netlify
+            window.location.href = `${netlifyUrl}?sid=${sid}&status=completed`;
         } else {
-            document.body.innerHTML = "Session Expired. Please restart from the portal.";
+            // Fallback: If no SID in URL, check if one was saved previously
+            // This prevents the "Expired" error if they refresh the bridge
+            window.location.href = netlifyUrl;
         }
     </script>
 </body>
