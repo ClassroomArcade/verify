@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Redirecting...</title>
+    <title>Oblivion X Redirect</title>
     <style>
-        body { background: #0F0F12; color: white; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
-        .loader { border: 4px solid #17191C; border-top: 4px solid #8C5AFF; border-radius: 50%; width: 40px; height: 40px; animate: spin 1s linear infinite; }
+        body { background: #0F0F12; color: #8C5AFF; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+        .spinner { border: 3px solid #17191C; border-top: 3px solid #8C5AFF; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
     <div style="text-align: center;">
-        <div class="loader" style="margin: 0 auto 20px;"></div>
-        <p>Verifying access... please wait.</p>
+        <div class="spinner" style="margin: 0 auto 15px;"></div>
+        <p style="font-size: 12px; letter-spacing: 2px;">VERIFYING SESSION...</p>
     </div>
 
     <script>
-        // 1. Get the SID from the URL (passed by Linkvertise)
-        const urlParams = new URLSearchParams(window.location.search);
-        const sid = urlParams.get('sid') || urlParams.get('custom_id');
+        // Grab the SID from Linkvertise
+        const params = new URLSearchParams(window.location.search);
+        const sid = params.get('sid') || params.get('custom_id');
 
-        // 2. The destination (Your Netlify Site)
-        const netlifyUrl = "https://oblivionxkey.netlify.app/verify";
+        // Your Netlify URL
+        const destination = "https://oblivionxkey.netlify.app/verify";
 
-        // 3. Redirect to Netlify with the SID
         if (sid) {
-            window.location.href = `${netlifyUrl}?sid=${sid}`;
+            // Send user to Netlify with the ID attached
+            window.location.href = `${destination}?sid=${sid}`;
         } else {
-            document.body.innerHTML = "Error: No Session ID found. Please go back to the main portal.";
+            document.body.innerHTML = "Session Expired. Please restart from the portal.";
         }
     </script>
 </body>
